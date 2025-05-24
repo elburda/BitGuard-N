@@ -33,16 +33,14 @@ export default {
 
 <form 
     action="#"
-    @submit.prevent="handleSubmit"
->
+    @submit.prevent="handleSubmit">
     <div class="mb-3">
         <label for="email" class="block mb-2">Email</label>
         <input
             v-model="user.email"
             type="email"
             id="email"
-            class="w-full p-2 border border-gray-400 rounded"
-        >
+            class="w-full p-2 border border-gray-400 rounded">
     </div>
     <div class="mb-3">
         <label for="password" class="block mb-2">Contraseña</label>
@@ -50,8 +48,7 @@ export default {
             v-model="user.password"
             type="password"
             id="password"
-            class="w-full p-2 border border-gray-400 rounded"
-        >
+            class="w-full p-2 border border-gray-400 rounded">
     </div>
     <button type="submit" class="transition-colors py-2 px-4 rounded bg-blue-600 text-white focus:bg-blue-500 hover:bg-blue-500">Ingresar</button>
 </form>

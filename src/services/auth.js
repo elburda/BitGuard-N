@@ -1,7 +1,50 @@
 import supabase from "./supabase";
+import { getUserProfileById } from "./user-profiles";
+
+
+let user={
+    id: null,
+    email: null,
+    bio: null,
+    display_name: null,
+    career: null,
+}
+//pedimos cargar la data del user authenticado
+let observers =[];
+getAuthUser();
+/**
+ *carga la data del usuario
+ */
+async function getAuthUser() {
+    const {data,error} = await supabase.auth.getUser();
+        
+    if(error) {
+        console.error('[auth.js getAuthUser] Error al traer el usuario: ', error);
+        throw error;
+    }
+
+    user ={
+        ...user,
+        id: data.user.id,
+        email: data.user.email,
+    }
+    notifyAll();
+    loadUserProfile();
+}
+
+async function loadUserProfile() {
+    const profile = await getUserProfileById(user.id);
+    user ={
+        ...user,
+        bio: profile.bio,
+        display_name: profile.display_name,
+        career: profile.career,
+    }
+    notifyAll();
+}
 
 /**
- * Registra un usuario y lo autentica.
+ * Registra y lo autentica
  * 
  * @param {string} email 
  * @param {string} password 
@@ -19,7 +62,13 @@ export async function register(email, password) {
         throw error;
     }
 
-    console.log(data);
+    // console.log(data);
+    user ={
+        ...user,
+        id: data.user.id,
+        email: data.user.email,
+    }
+    notifyAll();
 
     return data.user;
 }
@@ -40,11 +89,44 @@ export async function login(email, password) {
         throw error;
     }
 
-    console.log(data);
+    user ={
+        ...user,
+        id: data.user.id,
+        email: data.user.email,
+    }
+    notifyAll();
+    loadUserProfile();
 
     return data.user;
 }
 
 export async function logout() {
-
+    supabase.auth.signOut();
+    user ={
+        ...user,
+        id: null,
+        email: null,
+    }
+    notifyAll();
+}
+/*-----------------------------------------
+|Metodos del observer para la autenticación
+-------------------------------------------*/
+/*** 
+ * @param{()=>()} callback
+ */
+export function subscribeToAuthState(callback){
+    observers.push(callback);
+    notify(callback);
+}
+/**
+ * @param{()=>{}} callback
+ */
+function notify(callback){
+    callback({...user});
+}
+/**
+ */
+function notifyAll(){
+    observers.forEach(callback => notify(callback));
 }

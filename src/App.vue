@@ -1,7 +1,29 @@
 <script>
+import { logout, subscribeToAuthState } from './services/auth';
+
 
 export default {
     name: 'App',
+    data(){
+        return{
+            user: {
+                id: null,
+                email:null,
+                bio: null,
+                display_name: null,
+                career: null,
+            }
+        };
+    },
+    methods:{
+        handleLogout(){
+            logout();
+            this.$router.push('/ingresar');
+        }
+    },
+    async mounted(){
+        subscribeToAuthState(newUserData => this.user = newUserData);
+    }
 }
 </script>
 
@@ -12,15 +34,32 @@ export default {
             <li>
                 <RouterLink to="/">Home</RouterLink>
             </li>
-            <li>
-                <RouterLink to="/chat">Chat Global</RouterLink>
-            </li>
-            <li>
-                <RouterLink to="/ingresar">Ingresar</RouterLink>
-            </li>
-            <li>
-                <RouterLink to="/crear-cuenta">Crear Cuenta</RouterLink>
-            </li>
+            <template v-if="user.id !== null">
+                <li>
+                    <RouterLink to="/chat">Chat global</RouterLink>
+                </li>
+                <li>
+                    <RouterLink to="/mi-perfil">Mi perfil</RouterLink>
+                </li>
+                <li>
+                    <form 
+                        action="#"
+                        @submit.prevent="handleLogout"
+                    >
+                        <button type="submit">
+                            {{ user.email }} (Cerrar sesión)
+                        </button>
+                    </form>
+                </li>
+            </template>
+            <template v-else>
+                <li>
+                    <RouterLink to="/ingresar">Ingresar</RouterLink>
+                </li>
+                <li>
+                    <RouterLink to="/crear-cuenta">Crear cuenta</RouterLink>
+                </li>
+            </template>
         </ul>
     </nav>
     <main class="container p-4 mx-auto">

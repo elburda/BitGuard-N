@@ -57,16 +57,14 @@ export default {
 
         <div 
             ref="chatContainer"
-            class="overflow-y-auto w-9/12 h-100 p-4 border border-gray-400 rounded"
-        >
+            class="overflow-y-auto w-9/12 h-100 p-4 border border-gray-400 rounded">
             <h2 class="sr-only">Lista de Mensajes</h2>
 
             <ul class="flex flex-col gap-4">
 
                 <li
                     v-for="message in messages"
-                    class="flex flex-col gap-0.5"
-                >
+                    class="flex flex-col gap-0.5">
                     <div><b>{{ message.email }}</b> dijo:</div>
                     <div>{{ message.body }}</div>
                     <div class="text-sm text-gray-500">{{ message.created_at }}</div>
@@ -86,16 +84,15 @@ export default {
                         v-model="newMessage.email"
                         type="email"
                         id="email"
-                        class="w-full p-2 border border-gray-400 rounded"
-                    >
+                        class="w-full p-2 border border-gray-400 rounded">
                 </div>
                 <div class="mb-3">
                     <label for="body" class="block mb-2">Mensaje</label>
                     <textarea
                         v-model="newMessage.body"
                         id="body"
-                        class="w-full p-2 border border-gray-400 rounded"
-                    ></textarea>
+                        class="w-full p-2 border border-gray-400 rounded">
+                    </textarea>
                 </div>
                 <button type="submit" class="transition-colors py-2 px-4 rounded bg-blue-600 text-white focus:bg-blue-500 hover:bg-blue-500">Enviar</button>
             </form>
