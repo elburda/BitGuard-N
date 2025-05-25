@@ -21,6 +21,7 @@ export default {
                 this.loading = true;
                 await login(this.user.email, this.user.password);
                 this.loading = false;
+                this.$router.push('/chat');
             } catch (error) {
                 // TODO:
             }
