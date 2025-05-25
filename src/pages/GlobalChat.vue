@@ -2,6 +2,8 @@
 import { nextTick } from 'vue';
 import MainH1 from '../components/MainH1.vue';
 import { receiveGlobalChatMessages, saveGlobalChatMessage, getGlobalChatLastMessages } from '../services/global-chat';
+import { subscribeToAuthState } from '../services/auth';
+import { RouterLink } from 'vue-router';
 
 export default {
     name: 'GlobalChat',
@@ -9,9 +11,17 @@ export default {
 
     data() {
         return {
+            user: {
+                id: null,
+                email: null,
+                display_name: null,
+                bio: null,
+                career: null,
+            },
             messages: [],
+            loadingMessages: false,
+
             newMessage: {
-                email: '',
                 body: '',
             },
         };
@@ -21,7 +31,8 @@ export default {
         async sendMessage() {
             try {
                 await saveGlobalChatMessage({
-                    email: this.newMessage.email,
+                    sender_id: this.user.id,
+                    email: this.user.email,
                     body: this.newMessage.body,
                 });
 
@@ -31,6 +42,8 @@ export default {
         }
     },
     async mounted() {
+
+        subscribeToAuthState(newUserData => this.user = newUserData);
         receiveGlobalChatMessages(async newReceivedMessage => {
             this.messages.push(newReceivedMessage);
             
@@ -65,7 +78,12 @@ export default {
                 <li
                     v-for="message in messages"
                     class="flex flex-col gap-0.5">
-                    <div><b>{{ message.email }}</b> dijo:</div>
+
+                    <div>
+                        <RouterLink
+                            :to="'/usuario/${message.sender_id}'"
+                            class="text-blue-700 font-bold underline"
+                        >{{ message.email }}</RouterLink> dijo:</div>
                     <div>{{ message.body }}</div>
                     <div class="text-sm text-gray-500">{{ message.created_at }}</div>
                 </li>
@@ -79,12 +97,13 @@ export default {
                 @submit.prevent="() => sendMessage()">
 
                 <div class="mb-3">
-                    <label for="email" class="block mb-2">Email</label>
-                    <input
+                    <span for="email" class="block mb-2">Email</span>
+                    <div class="font-bold">{{ user.email }}</div>
+                    <!-- <input
                         v-model="newMessage.email"
                         type="email"
                         id="email"
-                        class="w-full p-2 border border-gray-400 rounded">
+                        class="w-full p-2 border border-gray-400 rounded"> -->
                 </div>
                 <div class="mb-3">
                     <label for="body" class="block mb-2">Mensaje</label>

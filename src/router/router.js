@@ -5,13 +5,17 @@ import GlobalChat from '../pages/GlobalChat.vue';
 import Login from '../pages/Login.vue';
 import Register from '../pages/Register.vue';
 import MyProfile from '../pages/MyProfile.vue';
+import MyProfileEdit from '../pages/MyProfileEdit.vue';
+import UserProfile from '../pages/userProfile.vue';
 
 const routes = [
-    { path: '/',               component: Home, },
-    { path: '/ingresar',       component: Login, },
-    { path: '/crear-cuenta',   component: Register, },
-    { path: '/chat',           component: GlobalChat, meta:{requiresAuth:true},},
-    { path: '/mi-perfil',      component: MyProfile, meta:{requiresAuth:true},},
+    { path: '/',                      component: Home,name:'home', },
+    { path: '/ingresar',              component: Login,name:'login', },
+    { path: '/crear-cuenta',          component: Register,name:'register', },
+    { path: '/chat',                  component: GlobalChat, meta:{requiresAuth:true},name:'global-chat',},
+    { path: '/mi-perfil',             component: MyProfile, meta:{requiresAuth:true},name:'my-profile',},
+    { path: '/mi-perfil/editar',      component: MyProfileEdit, meta:{requiresAuth:true},name:'my-profile.edit',},
+    { path: '/usuario/:id',           component: UserProfile, meta:{requiresAuth:true},name:'user-profile',},
 ];
 
 const router = createRouter({

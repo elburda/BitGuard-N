@@ -2,9 +2,10 @@
 import { RouterLink } from 'vue-router';
 import MainH1 from '../components/MainH1.vue';
 import { subscribeToAuthState } from '../services/auth';
+import { getUserProfileById } from '../services/user-profiles';
 
 export default {
-    name: 'MyProfile',
+    name: 'UserProfile',
     components: { MainH1 },
     data() {
         return {
@@ -15,21 +16,25 @@ export default {
                 display_name: null,
                 career: null,
 
-            }
+            },
+            loadingUser: false,
         }
     },
-    mounted() {
-        subscribeToAuthState(newUserData => this.user = newUserData);
-    }
+    async mounted() {
+        try {
+            this.loadingUser = true;
+            this.user = await getUserProfileById(this.$route.params.id);
+            this.loadingUser = false;
+        } catch (error) {
+            
+        }
+    },
 }
 </script>
 
 <template>
-    <div class="flex items-end gap-4">
-        <MainH1>Mi perfil</MainH1>
-        <RouterLink to="mi-perfil/editar" class="mb-4 text-blue-700">Editar</RouterLink>
-    </div>
 
+    <MainH1>Perfil de {{ user.email }}</MainH1>
 
     <div class="px-4 mb-4 italic">{{ user.bio || 'Acá va mi biografi...' }}</div>
     <dl>

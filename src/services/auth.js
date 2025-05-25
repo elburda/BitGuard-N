@@ -1,5 +1,5 @@
 import supabase from "./supabase";
-import { getUserProfileById } from "./user-profiles";
+import { createUserProfile, getUserProfileById, updateUserProfile } from "./user-profiles";
 
 
 let user={
@@ -23,24 +23,20 @@ async function getAuthUser() {
         throw error;
     }
 
-    user ={
-        ...user,
+    updateUser({
         id: data.user.id,
         email: data.user.email,
-    }
-    notifyAll();
+    });
     loadUserProfile();
 }
 
 async function loadUserProfile() {
     const profile = await getUserProfileById(user.id);
-    user ={
-        ...user,
+    updateUser({
         bio: profile.bio,
         display_name: profile.display_name,
         career: profile.career,
-    }
-    notifyAll();
+    });
 }
 
 /**
@@ -61,14 +57,19 @@ export async function register(email, password) {
         console.error('[auth.js register] Error al crear una cuenta: ', error);
         throw error;
     }
+    try {
+        await createUserProfile({
+            id: data.user.id,
+            email,
+        });
+    } catch (error) {
+        throw error;
+    }
 
-    // console.log(data);
-    user ={
-        ...user,
+    updateUser({
         id: data.user.id,
         email: data.user.email,
-    }
-    notifyAll();
+    });
 
     return data.user;
 }
@@ -89,12 +90,10 @@ export async function login(email, password) {
         throw error;
     }
 
-    user ={
-        ...user,
+    updateUser({
         id: data.user.id,
         email: data.user.email,
-    }
-    notifyAll();
+    });
     loadUserProfile();
 
     return data.user;
@@ -102,12 +101,11 @@ export async function login(email, password) {
 
 export async function logout() {
     supabase.auth.signOut();
-    user ={
-        ...user,
+    updateUser({
         id: null,
         email: null,
-    }
-    notifyAll();
+
+    });
 }
 /*-----------------------------------------
 |Metodos del observer para la autenticación
@@ -129,4 +127,26 @@ function notify(callback){
  */
 function notifyAll(){
     observers.forEach(callback => notify(callback));
+}
+
+export async function updateAuthProfile(data) {
+    try {
+        await updateUserProfile(user.id, data);
+    updateUser({
+        bio: data.bio,
+        display_name: data.display_name,
+        career: data.career,
+    });
+
+    } catch (error) {
+        throw error;
+    }
+}
+
+function updateUser(data){
+    user ={
+    ...user,
+    ...data,
+    }
+    notifyAll();
 }
