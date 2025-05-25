@@ -70,7 +70,7 @@ export default {
             this.loadingMessages = false;
             await nextTick();
 
-            this.$refs.chatContainer.scrollTop = this.$refs.chatContainer.scrollHeight;
+            // this.$refs.chatContainer.scrollTop = this.$refs.chatContainer.scrollHeight;
         } catch (error) {
         }
 
@@ -85,6 +85,29 @@ export default {
 
 <template>
     <div class="flex flex-col">
+        <div class="mx-auto overflow-y-auto w-9/12 py-5">
+            <h2 class="mb-4 text-xl">Crear publicación</h2>
+
+            <form 
+                action="#"
+                @submit.prevent="() => sendMessage()">
+
+                <div class="mb-3">
+                    <span for="email" class="block mb-2">Email</span>
+                    <div class="font-bold">{{ user.email }}</div>
+                </div>
+                <div class="mb-3">
+                    <label for="body" class="block mb-2">Mensaje</label>
+                    <textarea
+                        v-model="newMessage.body"
+                        id="body"
+                        class="w-full p-2 border border-gray-400 rounded">
+                    </textarea>
+                </div>
+                <MainButton type="submit">Enviar</MainButton>
+            </form>
+        </div>
+
         <div 
             ref="chatContainer"
             class="mx-auto overflow-y-auto w-9/12 h-100 scrollbar-hidden">
@@ -114,27 +137,6 @@ export default {
             </ul>
             <MainLoader v-else/>
         </div>
-        <div class="mx-auto overflow-y-auto w-9/12 py-5">
-            <h2 class="mb-4 text-xl">Crear publicación</h2>
-
-            <form 
-                action="#"
-                @submit.prevent="() => sendMessage()">
-
-                <div class="mb-3">
-                    <span for="email" class="block mb-2">Email</span>
-                    <div class="font-bold">{{ user.email }}</div>
-                </div>
-                <div class="mb-3">
-                    <label for="body" class="block mb-2">Mensaje</label>
-                    <textarea
-                        v-model="newMessage.body"
-                        id="body"
-                        class="w-full p-2 border border-gray-400 rounded">
-                    </textarea>
-                </div>
-                <MainButton type="submit">Enviar</MainButton>
-            </form>
-        </div>
+        
     </div>
 </template>

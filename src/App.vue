@@ -72,10 +72,10 @@ export default {
                 </template>
                 <template v-else>
                     <li>
-                        <RouterLink to="/ingresar">Ingresar</RouterLink>
+                        <RouterLink to="/ingresar" class="inline-block hover:text-[#00FFC3] transform transition-transform duration-300 ease-in-out hover:scale-110">Ingresar</RouterLink>
                     </li>
                     <li>
-                        <RouterLink to="/crear-cuenta">Crear cuenta</RouterLink>
+                        <RouterLink to="/crear-cuenta" class="inline-block hover:text-[#00FFC3] transform transition-transform duration-300 ease-in-out hover:scale-110">Crear cuenta</RouterLink>
                     </li>
                 </template>
             </ul>
