@@ -107,7 +107,6 @@ export default {
                 <MainButton type="submit">Enviar</MainButton>
             </form>
         </div>
-
         <div 
             ref="chatContainer"
             class="mx-auto overflow-y-auto w-9/12 h-100 scrollbar-hidden">
