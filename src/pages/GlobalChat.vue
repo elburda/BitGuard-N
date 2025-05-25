@@ -99,7 +99,7 @@ export default {
             <MainLoader v-else/>
         </div>
         <div class="col-3/12">
-            <h2 class="mb-4 text-xl">Enviar un mensaje</h2>
+            <h2 class="mb-4 text-xl">Crear publicación</h2>
 
             <form 
                 action="#"
