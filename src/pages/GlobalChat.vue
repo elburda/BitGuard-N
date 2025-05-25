@@ -67,39 +67,39 @@ export default {
 </script>
 
 <template>
-    <MainH1>Chat global</MainH1>
-
-    <div class="flex gap-4">
-
+    
+    <div class="flex flex-col">
         <div 
             ref="chatContainer"
-            class="overflow-y-auto w-9/12 h-100 p-4 border border-gray-400 rounded">
+            class="mx-auto overflow-y-auto w-9/12 h-100 scrollbar-hidden">
             <h2 class="sr-only">Lista de Mensajes</h2>
-
             <ul 
                 v-if="!loadingMessages"
-                class="flex flex-col gap-4">
+                class="flex flex-col gap-4 divide-y divide-gray-300">
 
                 <li
                     v-for="message in messages"
-                    class="flex flex-col gap-0.5">
+                    class="flex flex-col gap-0.5 py-2">
 
                     <div>
                         <RouterLink
                         :to="`/usuario/${message.sender_id}`"
-                        class="text-blue-700 font-bold underline"
+                        class="text-green-400 font-bold underline"
                         >
                         {{ message.email }}
                         </RouterLink> dijo:
                     </div>
                     <div>{{ message.body }}</div>
-                    <div class="text-sm text-gray-500">{{ message.created_at }}</div>
+                    <div class="text-sm text-gray-500">
+                        {{ new Date(message.created_at).toLocaleDateString() }}
+                        {{ new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
+                    </div>
                 </li>
             </ul>
             <MainLoader v-else/>
         </div>
-        <div class="col-3/12">
-            <h2 class="mb-4 text-xl">Enviar un mensaje</h2>
+        <div class="mx-auto overflow-y-auto w-9/12 py-5">
+            <h2 class="mb-4 text-xl">Crear publicación</h2>
 
             <form 
                 action="#"
