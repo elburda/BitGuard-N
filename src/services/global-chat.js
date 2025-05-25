@@ -22,7 +22,8 @@ export async function getGlobalChatLastMessages() {
 
     const { data, error } = await supabase
         .from('global_chat')
-        .select();
+        .select()
+        .order('created_at', { ascending: false });
 
     if(error) {
         console.error('[global-chat.js getGlobalChatLastMessages] Error al traer los mensajes: ', error);
