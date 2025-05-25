@@ -12,6 +12,10 @@ let user={
 //pedimos cargar la data del user authenticado
 let observers =[];
 getAuthUser();
+
+if(localStorage.getItem('user')){
+    user =JSON.parse(localStorage.getItem('user'));
+}
 /**
  *carga la data del usuario
  */
@@ -149,4 +153,9 @@ function updateUser(data){
     ...data,
     }
     notifyAll();
+    if(user.id !== null){
+        localStorage.setItem('user', JSON.stringify(user));
+    }else{
+        localStorage.removeItem('user');
+    }
 }

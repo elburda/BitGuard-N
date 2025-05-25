@@ -1,10 +1,11 @@
 <script>
+import MainButton from '../components/MainButton.vue';
 import MainH1 from '../components/MainH1.vue';
 import { login } from '../services/auth';
 
 export default {
     name: 'Login',
-    components: { MainH1 },
+    components: { MainH1,MainButton, },
     data() {
         return {
             user: {
@@ -50,6 +51,6 @@ export default {
             id="password"
             class="w-full p-2 border border-gray-400 rounded">
     </div>
-    <button type="submit" class="transition-colors py-2 px-4 rounded bg-blue-600 text-white focus:bg-blue-500 hover:bg-blue-500">Ingresar</button>
+    <MainButton type="submit">login</MainButton>
 </form>
 </template>

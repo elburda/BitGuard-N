@@ -14,7 +14,6 @@ export default {
                 bio: null,
                 display_name: null,
                 career: null,
-
             }
         }
     },

@@ -4,10 +4,12 @@ import MainH1 from '../components/MainH1.vue';
 import { receiveGlobalChatMessages, saveGlobalChatMessage, getGlobalChatLastMessages } from '../services/global-chat';
 import { subscribeToAuthState } from '../services/auth';
 import { RouterLink } from 'vue-router';
+import MainLoader from '../components/MainLoader.vue';
+import MainButton from '../components/MainButton.vue';
 
 export default {
     name: 'GlobalChat',
-    components: { MainH1 },
+    components: { MainH1,MainLoader, MainButton},
 
     data() {
         return {
@@ -52,8 +54,9 @@ export default {
         });
 
         try {
+            this.loadingMessages = true;
             this.messages = await getGlobalChatLastMessages();
-
+            this.loadingMessages = false;
             await nextTick();
 
             this.$refs.chatContainer.scrollTop = this.$refs.chatContainer.scrollHeight;
@@ -73,7 +76,9 @@ export default {
             class="overflow-y-auto w-9/12 h-100 p-4 border border-gray-400 rounded">
             <h2 class="sr-only">Lista de Mensajes</h2>
 
-            <ul class="flex flex-col gap-4">
+            <ul 
+                v-if="!loadingMessages"
+                class="flex flex-col gap-4">
 
                 <li
                     v-for="message in messages"
@@ -81,13 +86,17 @@ export default {
 
                     <div>
                         <RouterLink
-                            :to="'/usuario/${message.sender_id}'"
-                            class="text-blue-700 font-bold underline"
-                        >{{ message.email }}</RouterLink> dijo:</div>
+                        :to="`/usuario/${message.sender_id}`"
+                        class="text-blue-700 font-bold underline"
+                        >
+                        {{ message.email }}
+                        </RouterLink> dijo:
+                    </div>
                     <div>{{ message.body }}</div>
                     <div class="text-sm text-gray-500">{{ message.created_at }}</div>
                 </li>
             </ul>
+            <MainLoader v-else/>
         </div>
         <div class="col-3/12">
             <h2 class="mb-4 text-xl">Enviar un mensaje</h2>
@@ -99,11 +108,6 @@ export default {
                 <div class="mb-3">
                     <span for="email" class="block mb-2">Email</span>
                     <div class="font-bold">{{ user.email }}</div>
-                    <!-- <input
-                        v-model="newMessage.email"
-                        type="email"
-                        id="email"
-                        class="w-full p-2 border border-gray-400 rounded"> -->
                 </div>
                 <div class="mb-3">
                     <label for="body" class="block mb-2">Mensaje</label>
@@ -113,7 +117,7 @@ export default {
                         class="w-full p-2 border border-gray-400 rounded">
                     </textarea>
                 </div>
-                <button type="submit" class="transition-colors py-2 px-4 rounded bg-blue-600 text-white focus:bg-blue-500 hover:bg-blue-500">Enviar</button>
+                <MainButton type="submit">Enviar</MainButton>
             </form>
         </div>
     </div>

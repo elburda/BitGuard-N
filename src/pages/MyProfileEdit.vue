@@ -1,10 +1,11 @@
 <script>
+import MainButton from '../components/MainButton.vue';
 import MainH1 from '../components/MainH1.vue';
 import { subscribeToAuthState, updateAuthProfile } from '../services/auth';
 
 export default {
     name:'MyProfileEdit',
-    components: {MainH1,},
+    components: {MainH1, MainButton},
     data(){
         return {
             profile: {
@@ -68,6 +69,6 @@ export default {
                 id="career"
                 class="w-full p-2 border border-gray-400 rounded">
         </div>
-            <button type="submit" class="transition-colors py-2 px-4 rounded bg-blue-600 text-white focus:bg-blue-500 hover:bg-blue-500">Actualizar perfil</button>
+            <MainButton type="submit">Actualizar mi perfil</MainButton>
     </form>
 </template>
