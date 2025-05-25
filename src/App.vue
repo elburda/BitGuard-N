@@ -1,6 +1,6 @@
 <script>
 import { logout, subscribeToAuthState } from './services/auth';
-import logo from './assets/iso.png';
+import logo from './assets/iso-03.png';
 
 
 
@@ -33,12 +33,8 @@ export default {
 
 <template>
     <div class="flex flex-col min-h-screen bg-gradient-to-b from-[#FFFFFF] to-[#D7DDFF] text-black">
-        <nav class="flex items-center h-27 gap-8 p-4 bg-gradient-to-b from-[#287AE6] to-[#0C4EA4] text-white">
-            <!-- <RouterLink class="text-lg" to="/">BitGuard</RouterLink> -->
-            <!-- <RouterLink to="/" class="w-32 h-auto inline-block">
-                <Logo class="w-full h-auto fill-white hover:fill-[#90f8c3] transition duration-300" />
-            </RouterLink> -->
-            <RouterLink to="/" class="inline-block w-12">
+        <nav class="flex items-center justify-center h-27 gap-8 p-4 bg-gradient-to-b from-[#287AE6] to-[#0C4EA4] text-white">
+            <RouterLink to="/" class="inline-block w-22">
                 <img 
                     :src="logo" 
                     alt="BitGuard logo" 

@@ -73,7 +73,7 @@ export default {
                 id="password"
                 class="w-full p-2 border border-gray-400 rounded">
         </div>
-        <MainButton type="submit" :disabled="loading">login</MainButton>
+        <MainButton type="submit" :disabled="loading">Login</MainButton>
     </form>
 </template>
 

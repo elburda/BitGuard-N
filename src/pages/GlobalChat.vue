@@ -25,6 +25,7 @@ export default {
 
             newMessage: {
                 body: '',
+                imageFile: null,
             },
         };
     },
@@ -51,6 +52,12 @@ export default {
                 container.scrollTop += e.deltaY;
                 e.preventDefault();
             }
+        },
+        handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+                this.newMessage.imageFile = file;
+            }
         }
     },
 
@@ -58,10 +65,11 @@ export default {
 
         subscribeToAuthState(newUserData => this.user = newUserData);
         receiveGlobalChatMessages(async newReceivedMessage => {
+            // this.messages.push(newReceivedMessage);
             this.messages.push(newReceivedMessage);
-
+            this.messages.unshift(newReceivedMessage);
             await nextTick();
-            this.$refs.chatContainer.scrollTop = this.$refs.chatContainer.scrollHeight;
+            // this.$refs.chatContainer.scrollTop = this.$refs.chatContainer.scrollHeight;
         });
 
         try {
@@ -85,6 +93,7 @@ export default {
 
 <template>
     <div class="mx-auto flex flex-col">
+        
         <div class="mx-auto overflow-y-auto w-9/12 pb-3">
             
             <h2 class="mb-4 text-xl">Crear publicación</h2>
@@ -102,10 +111,21 @@ export default {
                     <textarea
                         v-model="newMessage.body"
                         id="body"
-                        class="w-full p-2 border border-gray-400 rounded">
+                        class="w-full p-2 border border-gray-400 rounded resize-y max-h-[150px]">
                     </textarea>
                 </div>
-                <MainButton type="submit">Postear</MainButton>
+                <div class="mb-3">
+                    <label for="image" class="block mb-2">Imagen (opcional)</label>
+                        <input
+                            type="file"
+                            id="image"
+                            accept="image/*"
+                            @change="handleImageUpload"
+                            class="block w-full text-sm text-gray-600"
+                        />
+                    </div>
+                    <MainButton type="submit">Postear</MainButton>
+
             </form>
         </div>
         <div 
@@ -135,7 +155,10 @@ export default {
                     </div>
                 </li>
             </ul>
-            <MainLoader v-else/>
+            <!-- <MainLoader v-else/> -->
+            <div v-else class="flex justify-center items-center w-full">
+                <MainLoader />
+            </div>
         </div>
         
     </div>
