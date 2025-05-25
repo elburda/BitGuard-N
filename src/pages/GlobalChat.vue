@@ -84,16 +84,17 @@ export default {
 </script>
 
 <template>
-    <div class="flex flex-col">
-        <div class="mx-auto overflow-y-auto w-9/12 py-5">
+    <div class="mx-auto flex flex-col">
+        <div class="mx-auto overflow-y-auto w-9/12 pb-3">
+            
             <h2 class="mb-4 text-xl">Crear publicación</h2>
 
             <form 
                 action="#"
                 @submit.prevent="() => sendMessage()">
 
-                <div class="mb-3">
-                    <span for="email" class="block mb-2">Email</span>
+                <div class="mb-1 flex">
+                    <span for="email" class="block mb-2 pr-2">Email:</span>
                     <div class="font-bold">{{ user.email }}</div>
                 </div>
                 <div class="mb-3">
@@ -104,7 +105,7 @@ export default {
                         class="w-full p-2 border border-gray-400 rounded">
                     </textarea>
                 </div>
-                <MainButton type="submit">Enviar</MainButton>
+                <MainButton type="submit">Postear</MainButton>
             </form>
         </div>
         <div 
@@ -125,7 +126,7 @@ export default {
                         class="text-blue-800 font-bold underline"
                         >
                         {{ message.email }}
-                        </RouterLink> dijo:
+                        </RouterLink>
                     </div>
                     <div>{{ message.body }}</div>
                     <div class="text-sm text-green-600">
