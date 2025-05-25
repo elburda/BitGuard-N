@@ -9,7 +9,7 @@ import MainButton from '../components/MainButton.vue';
 
 export default {
     name: 'GlobalChat',
-    components: { MainH1, MainLoader, MainButton },
+    components: { MainH1,MainLoader, MainButton},
 
     data() {
         return {
@@ -41,25 +41,14 @@ export default {
                 this.newMessage.body = '';
             } catch (error) {
             }
-        },
-        redirectScrollToChat(e) {
-            const container = this.$refs.chatContainer;
-            if (!container) return;
-
-            const hovered = document.elementFromPoint(e.clientX, e.clientY);
-            if (!container.contains(hovered)) {
-                container.scrollTop += e.deltaY;
-                e.preventDefault();
-            }
         }
     },
-
     async mounted() {
 
         subscribeToAuthState(newUserData => this.user = newUserData);
         receiveGlobalChatMessages(async newReceivedMessage => {
             this.messages.push(newReceivedMessage);
-
+            
             await nextTick();
             this.$refs.chatContainer.scrollTop = this.$refs.chatContainer.scrollHeight;
         });
@@ -73,17 +62,12 @@ export default {
             this.$refs.chatContainer.scrollTop = this.$refs.chatContainer.scrollHeight;
         } catch (error) {
         }
-
-        window.addEventListener('wheel', this.redirectScrollToChat, { passive: false });
-    },
-
-    beforeUnmount() {
-        window.removeEventListener('wheel', this.redirectScrollToChat);
     }
 }
 </script>
 
 <template>
+    
     <div class="flex flex-col">
         <div 
             ref="chatContainer"
@@ -100,13 +84,13 @@ export default {
                     <div>
                         <RouterLink
                         :to="`/usuario/${message.sender_id}`"
-                        class="text-blue-800 font-bold underline"
+                        class="text-green-400 font-bold underline"
                         >
                         {{ message.email }}
                         </RouterLink> dijo:
                     </div>
                     <div>{{ message.body }}</div>
-                    <div class="text-sm text-green-600">
+                    <div class="text-sm text-gray-500">
                         {{ new Date(message.created_at).toLocaleDateString() }}
                         {{ new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
                     </div>
