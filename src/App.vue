@@ -1,5 +1,8 @@
 <script>
 import { logout, subscribeToAuthState } from './services/auth';
+import logo from './assets/iso.png';
+
+
 
 
 export default {
@@ -12,7 +15,8 @@ export default {
                 bio: null,
                 display_name: null,
                 career: null,
-            }
+            },
+            logo
         };
     },
     methods:{
@@ -28,47 +32,59 @@ export default {
 </script>
 
 <template>
-    <nav class="flex items-center gap-8 p-4 bg-slate-300">
-        <RouterLink class="text-lg" to="/">BitGuard</RouterLink>
-        <ul class="flex gap-4">
-            <li>
-                <RouterLink to="/">Home</RouterLink>
-            </li>
-            <template v-if="user.id !== null">
+    <div class="flex flex-col min-h-screen bg-gradient-to-b from-[#FFFFFF] to-[#D7DDFF] text-black">
+        <nav class="flex items-center h-27 gap-8 p-4 bg-gradient-to-b from-[#0C4EA4] to-[#287AE6] text-white">
+            <!-- <RouterLink class="text-lg" to="/">BitGuard</RouterLink> -->
+            <!-- <RouterLink to="/" class="w-32 h-auto inline-block">
+                <Logo class="w-full h-auto fill-white hover:fill-[#90f8c3] transition duration-300" />
+            </RouterLink> -->
+            <RouterLink to="/" class="inline-block w-12">
+                <img 
+                    :src="logo" 
+                    alt="BitGuard logo" 
+                    class="w-full h-auto" 
+                />
+            </RouterLink>
+            <ul class="flex gap-4">
                 <li>
-                    <RouterLink to="/chat">Chat global</RouterLink>
+                    <RouterLink to="/" class="inline-block hover:text-[#00FFC3] transform transition-transform duration-300 ease-in-out hover:scale-110" >Home</RouterLink>
                 </li>
-                <li>
-                    <RouterLink to="/mi-perfil">Mi perfil</RouterLink>
-                </li>
-                <li>
-                    <form 
-                        action="#"
-                        @submit.prevent="handleLogout"
-                    >
-                    <button 
-                            type="submit"
-                            class="hover:underline cursor-pointer"
+                <template v-if="user.id !== null">
+                    <li>
+                        <RouterLink to="/chat" class="inline-block hover:text-[#00FFC3] transform transition-transform duration-300 ease-in-out hover:scale-110">Muro</RouterLink>
+                    </li>
+                    <li>
+                        <RouterLink to="/mi-perfil" class="inline-block hover:text-[#00FFC3] transform transition-transform duration-300 ease-in-out hover:scale-110">Perfil</RouterLink>
+                    </li>
+                    <li>
+                        <form 
+                            action="#"
+                            @submit.prevent="handleLogout"
                         >
-                            {{ user.email }} (Cerrar sesión)
-                    </button>
-                    </form>
-                </li>
-            </template>
-            <template v-else>
-                <li>
-                    <RouterLink to="/ingresar">Ingresar</RouterLink>
-                </li>
-                <li>
-                    <RouterLink to="/crear-cuenta">Crear cuenta</RouterLink>
-                </li>
-            </template>
-        </ul>
-    </nav>
-    <main class="container p-4 mx-auto">
-        <RouterView />
-    </main>
-    <footer class="flex justify-center items-center h-25 bg-slate-800 text-white">
-        <p>Da Vinci &copy; 2025</p>
-    </footer>
+                        <button 
+                                type="submit"
+                                class="hover:underline cursor-pointer"
+                            >
+                                {{ user.email }} (Cerrar sesión)
+                        </button>
+                        </form>
+                    </li>
+                </template>
+                <template v-else>
+                    <li>
+                        <RouterLink to="/ingresar">Ingresar</RouterLink>
+                    </li>
+                    <li>
+                        <RouterLink to="/crear-cuenta">Crear cuenta</RouterLink>
+                    </li>
+                </template>
+            </ul>
+        </nav>
+        <main class="container p-4 mx-auto flex-grow">
+            <RouterView />
+        </main>
+        <footer class="flex justify-center items-center h-25 bg-[#474747] text-white">
+            <p>BitGuard &copy; 2025</p>
+        </footer>
+    </div>
 </template>
