@@ -11,58 +11,75 @@ export default {
         MainButton,
         AlertMessage
     },
+
     data() {
         return {
             profile: {
                 bio: '',
                 display_name: '',
-                career: '',
+                sector: '',
+                equipo: '',
+                rustdesk: '',
             },
             editing: false,
             successMessage: '',
-            errorMessage: ''
+            errorMessage: '',
         };
     },
+
     methods: {
-        async handleSubmit() {
-            try {
-                this.editing = true;
-                await updateAuthProfile({ ...this.profile });
-                this.editing = false;
-                this.$router.push({
-                    path: '/mi-perfil',
-                    query: { success: 'true' }
-                });
-            } catch (error) {
-                console.error("Error al actualizar perfil", error);
-                this.editing = false;
-                this.errorMessage = 'Error al realizar cambios';
+    async handleSubmit() {
+        if (!/^\d*$/.test(this.profile.rustdesk)) {
+            this.errorMessage = 'El campo Rustdesk solo debe contener números.';
+            return;
             }
-        }
+        try {
+            this.editing = true;
+            await updateAuthProfile({ ...this.profile });
+            this.editing = false;
+            this.$router.push({ 
+                path: '/mi-perfil', 
+                query: { success: 'true' }
+            });
+            } catch (error) {
+                this.errorMessage = 'Ocurrió un error al actualizar tu perfil';
+                this.editing = false;
+            }
+        },
     },
     mounted() {
         subscribeToAuthState(newUserData => {
             this.profile = {
-                bio: newUserData.bio,
-                display_name: newUserData.display_name,
-                career: newUserData.career,
+            bio: newUserData.bio,
+            display_name: newUserData.display_name,
+            sector: newUserData.sector,
+            equipo: newUserData.equipo,
+            rustdesk: newUserData.rustdesk,
             };
         });
+        if (this.$route.query.success === 'true') {
+            this.successMessage = 'El perfil fue actualizado con éxito';
+        }
     }
 }
 </script>
 
 <template>
-    <AlertMessage
-        v-if="errorMessage"
-        :message="errorMessage"
-        type="danger"
+    <AlertMessage 
+        v-if="successMessage"
+        :message="successMessage"
+        type="success"
+        :autoDismiss="true"
+        @dismiss="successMessage = ''"
     />
     <MainH1>Editar mi perfil</MainH1>
     <form 
         action="#"
         @submit.prevent="handleSubmit"
     >
+        <div v-if="errorMessage" class="mb-4 p-3 bg-red-100 text-red-700 border border-red-400 rounded">
+            {{ errorMessage }}
+        </div>
         <div class="mb-3">
                 <label for="bio" class="block mb-2">Biografia</label>
                 <textarea
@@ -80,11 +97,27 @@ export default {
                 class="w-full p-2 border border-gray-400 rounded">
         </div>
         <div class="mb-3">
-            <label for="career" class="block mb-2">Carrera</label>
+            <label for="sector" class="block mb-2">sector</label>
             <input
-                v-model="profile.career"
+                v-model="profile.sector"
                 type="text"
                 id="career"
+                class="w-full p-2 border border-gray-400 rounded">
+        </div>
+        <div class="mb-3">
+            <label for="equipo" class="block mb-2">Equipo</label>
+            <input
+                v-model="profile.equipo"
+                type="text"
+                id="location"
+                class="w-full p-2 border border-gray-400 rounded">
+        </div>
+        <div class="mb-3">
+            <label for="rustdesk" class="block mb-2">Rustdesk</label>
+            <input
+                v-model="profile.rustdesk"
+                type="text"
+                id="linkedin"
                 class="w-full p-2 border border-gray-400 rounded">
         </div>
             <MainButton type="submit">Actualizar mi perfil</MainButton>

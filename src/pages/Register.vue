@@ -2,10 +2,11 @@
 import MainButton from '../components/MainButton.vue';
 import MainH1 from '../components/MainH1.vue';
 import { register } from '../services/auth';
+import AlertMessage from '../components/AlertMessage.vue';
 
 export default {
     name: 'Register',
-    components: { MainH1, MainButton },
+    components: { MainH1, MainButton,AlertMessage },
     data() {
         return {
             user: {
@@ -13,7 +14,8 @@ export default {
                 password: '',
             },
             loading: false,
-            error: '',
+            errorMessage: '',
+            successMessage: '',
         }
     },
     methods: {
@@ -39,7 +41,7 @@ export default {
             try {
                 this.loading = true;
                 await register(this.user.email, this.user.password);
-                this.$router.push({ path: '/chat', query: { success: 'true' } });
+                this.$router.push({ path: '/', query: { success: 'true' } });
             } catch (error) {
                 this.error = 'No se pudo crear la cuenta.';
             } finally {
@@ -51,6 +53,14 @@ export default {
 </script>
 
 <template>
+    
+    <AlertMessage 
+        v-if="successMessage"
+        :message="successMessage"
+        type="success"
+        :autoDismiss="true"
+        @dismiss="successMessage = ''"
+    />
     <MainH1>Crear una cuenta</MainH1>
 
     <form action="#" @submit.prevent="handleSubmit">

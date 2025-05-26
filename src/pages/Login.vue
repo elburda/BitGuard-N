@@ -2,10 +2,11 @@
 import MainButton from '../components/MainButton.vue';
 import MainH1 from '../components/MainH1.vue';
 import { login } from '../services/auth';
+import AlertMessage from '../components/AlertMessage.vue';
 
 export default {
     name: 'Login',
-    components: { MainH1, MainButton },
+    components: { MainH1, MainButton,AlertMessage},
     data() {
         return {
             user: {
@@ -13,7 +14,7 @@ export default {
                 password: '',
             },
             loading: false,
-            error: '',
+            errorMessage: '',
             successMessage: '',
         }
     },
@@ -39,8 +40,8 @@ export default {
             if (!this.validateForm()) return;
             try {
                 this.loading = true;
-                await login(this.user.email, this.user.password);
-                this.$router.push('/chat');
+            await login(this.user.email, this.user.password);
+                this.$router.push({ path: '/', query: { loginSuccess: 'true' } });
             } catch (error) {
                 this.error = 'Credenciales incorrectas.';
             } finally {
@@ -65,9 +66,14 @@ export default {
 <template>
     <MainH1>Ingresar a mi cuenta</MainH1>
 
-    <div v-if="successMessage" class="w-full p-4 mb-4 text-green-800 bg-green-100 border border-green-400 rounded">
-        {{ successMessage }}
-    </div>
+    <AlertMessage 
+        v-if="successMessage"
+        :message="successMessage"
+        type="success"
+        :autoDismiss="true"
+        @dismiss="successMessage = ''"
+    />
+
     <form action="#" 
         @submit.prevent="handleSubmit">
 

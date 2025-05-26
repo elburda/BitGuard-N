@@ -9,23 +9,28 @@ export default {
     name: 'MyProfile',
     components: { MainH1, AlertMessage },
     data() {
-        return {
+    return {
         user: {
-            id: null,
-            email: null,
-            bio: null,
-            display_name: null,
-            career: null,
+        id: null,
+        email: null,
+        bio: null,
+        display_name: null,
+        sector: null,
+        equipo: null, 
+        rustdesk: null
         },
         successMessage: ''
-        };
+    };
     },
+
     mounted() {
         subscribeToAuthState(newUserData => this.user = newUserData);
 
         if (this.$route.query.success === 'true') {
-        this.successMessage = 'El perfil fue actualizado con éxito';
-        this.$router.replace({ path: this.$route.path });
+            this.successMessage = 'El perfil fue actualizado con éxito';
+            setTimeout(() => {
+                this.$router.replace({ path: this.$route.path });
+            }, 3000);
         }
     }
 };
@@ -36,7 +41,10 @@ export default {
             v-if="successMessage"
             :message="successMessage"
             type="success"
+            :autoDismiss="true"
+            @dismiss="successMessage = ''"
         />
+
     <div class="mx-auto max-w-[900px] w-full px-4 sm:px-8 py-10 mt-20 bg-white shadow rounded-xl">
         <div class="flex items-center gap-6 mb-6">
         <div class="w-28 h-28 bg-gray-300 rounded-full border-4 border-white shadow-md"></div>
@@ -65,8 +73,16 @@ export default {
             <dd class="mb-2">{{ user.email }}</dd>
         </div>
         <div>
-            <dt class="font-semibold">Carrera</dt>
-            <dd class="mb-2">{{ user.career || 'Sin especificar' }}</dd>
+            <dt class="font-semibold">Sector</dt>
+            <dd class="mb-2">{{ user.sector || 'Sin especificar' }}</dd>
+        </div>
+        <div>
+            <dt class="font-semibold">Equipo</dt>
+            <dd class="mb-2">{{ user.equipo || 'Sin especificar' }}</dd>
+        </div>
+        <div>
+            <dt class="font-semibold">Rustdesk</dt>
+            <dd class="mb-2">{{ user.rustdesk || 'Sin especificar' }}</dd>
         </div>
         </div>
     </div>

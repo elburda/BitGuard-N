@@ -141,16 +141,6 @@ export default {
                         class="w-full p-2 border border-gray-400 rounded resize-y max-h-[150px]">
                     </textarea>
                 </div>
-                <!-- <div class="mb-3">
-                    <label for="image" class="block mb-2">Imagen (opcional)</label>
-                        <input
-                            type="file"
-                            id="image"
-                            accept="image/*"
-                            @change="handleImageUpload"
-                            class="block w-full text-sm text-gray-600"
-                        />
-                </div> -->
                 <MainButton type="submit">Postear</MainButton>
 
             </form>

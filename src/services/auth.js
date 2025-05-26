@@ -7,7 +7,9 @@ let user={
     email: null,
     bio: null,
     display_name: null,
-    career: null,
+    sector: null,
+    equipo: null,
+    rustdesk: null,
 }
 //pedimos cargar la data del user authenticado
 let observers =[];
@@ -39,7 +41,9 @@ async function loadUserProfile() {
     updateUser({
         bio: profile.bio,
         display_name: profile.display_name,
-        career: profile.career,
+        sector: profile.sector,
+        equipo: profile.equipo,
+        rustdesk: profile.rustdesk,
     });
 }
 
@@ -139,7 +143,9 @@ export async function updateAuthProfile(data) {
     updateUser({
         bio: data.bio,
         display_name: data.display_name,
-        career: data.career,
+        sector: data.sector,
+        equipo: data.equipo,
+        rustdesk: data.rustdesk,
     });
 
     } catch (error) {
