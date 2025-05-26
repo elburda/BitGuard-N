@@ -27,8 +27,10 @@ export default {
         subscribeToAuthState(newUserData => this.user = newUserData);
 
         if (this.$route.query.success === 'true') {
-        this.successMessage = 'El perfil fue actualizado con éxito';
-        this.$router.replace({ path: this.$route.path });
+            this.successMessage = 'El perfil fue actualizado con éxito';
+            setTimeout(() => {
+                this.$router.replace({ path: this.$route.path });
+            }, 3000);
         }
     }
 };
@@ -39,7 +41,10 @@ export default {
             v-if="successMessage"
             :message="successMessage"
             type="success"
+            :autoDismiss="true"
+            @dismiss="successMessage = ''"
         />
+
     <div class="mx-auto max-w-[900px] w-full px-4 sm:px-8 py-10 mt-20 bg-white shadow rounded-xl">
         <div class="flex items-center gap-6 mb-6">
         <div class="w-28 h-28 bg-gray-300 rounded-full border-4 border-white shadow-md"></div>

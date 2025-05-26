@@ -92,10 +92,6 @@ export default {
 </script>
 
 <template>
-    <div v-if="successMessage" class="w-full p-4 mb-4 text-green-800 bg-green-100 border border-green-400 rounded">
-        {{ successMessage }}
-    </div>
-
     <div class="mx-auto flex flex-col">
         
         <div class="mx-auto overflow-y-auto w-9/12 pb-3">

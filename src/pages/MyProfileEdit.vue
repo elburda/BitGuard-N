@@ -23,7 +23,7 @@ export default {
             },
             editing: false,
             successMessage: '',
-            // errorMessage: '',
+            errorMessage: '',
         };
     },
 
@@ -38,7 +38,7 @@ export default {
                 query: { success: 'true' }
             });
             } catch (error) {
-                console.log("Error al actualizar perfil");
+                this.errorMessage = 'Ocurrió un error al actualizar tu perfil';
                 this.editing = false;
             }
         },
@@ -61,10 +61,12 @@ export default {
 </script>
 
 <template>
-    <AlertMessage
-        v-if="errorMessage"
-        :message="errorMessage"
-        type="danger"
+    <AlertMessage 
+        v-if="successMessage"
+        :message="successMessage"
+        type="success"
+        :autoDismiss="true"
+        @dismiss="successMessage = ''"
     />
     <MainH1>Editar mi perfil</MainH1>
     <form 
