@@ -41,12 +41,13 @@ export default {
             try {
                 this.loading = true;
             await login(this.user.email, this.user.password);
-                this.$router.push({ path: '/', query: { loginSuccess: 'true' } });
+                this.$router.push({ path: '/mi-perfil', query: { loginSuccess: 'true' } });
             } catch (error) {
                 this.error = 'Credenciales incorrectas.';
             } finally {
                 this.loading = false;
             }
+            
         }
     },
     mounted() {

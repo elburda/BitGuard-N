@@ -60,8 +60,8 @@ export default {
         if (this.$route.query.success === 'true') {
             this.successMessage = 'El perfil fue actualizado con éxito';
         }
-    }
-}
+    },
+};
 </script>
 
 <template>

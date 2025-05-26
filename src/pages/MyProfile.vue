@@ -1,13 +1,14 @@
 <script>
-import { RouterLink } from 'vue-router';
 import MainH1 from '../components/MainH1.vue';
 import AlertMessage from '../components/AlertMessage.vue';
+import MainButton from '../components/MainButton.vue';
+
 
 import { subscribeToAuthState } from '../services/auth';
 
 export default {
     name: 'MyProfile',
-    components: { MainH1, AlertMessage },
+    components: { MainH1, AlertMessage, MainButton },
     data() {
     return {
         user: {
@@ -24,15 +25,23 @@ export default {
     },
 
     mounted() {
-        subscribeToAuthState(newUserData => this.user = newUserData);
+    subscribeToAuthState(newUserData => this.user = newUserData);
 
-        if (this.$route.query.success === 'true') {
-            this.successMessage = 'El perfil fue actualizado con éxito';
-            setTimeout(() => {
-                this.$router.replace({ path: this.$route.path });
-            }, 3000);
-        }
+    if (this.$route.query.success === 'true') {
+        this.successMessage = 'El perfil fue actualizado con éxito';
+    } else if (this.$route.query.loginSuccess === 'true') {
+        this.successMessage = 'Has iniciado sesión con éxito.';
+    } else if (this.$route.query.accountCreated === 'true') {
+        this.successMessage = 'La cuenta se ha creado con éxito. Por favor actualice los datos del perfil.';
     }
+
+    if (this.successMessage) {
+        setTimeout(() => {
+            this.$router.replace({ path: this.$route.path });
+        }, 3000);
+    }
+}
+
 };
 </script>
 
@@ -53,12 +62,11 @@ export default {
             <h1 class="text-3xl font-bold text-gray-800">
                 {{ user.display_name || 'Mi perfil' }}
             </h1>
-            <RouterLink
-                to="mi-perfil/editar"
-                class="text-sm text-blue-600 hover:underline"
-            >
-                Editar
+
+            <RouterLink to="mi-perfil/editar">
+                <MainButton>Editar</MainButton>
             </RouterLink>
+
             </div>
         </div>
         </div>

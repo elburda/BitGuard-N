@@ -41,7 +41,7 @@ export default {
             try {
                 this.loading = true;
                 await register(this.user.email, this.user.password);
-                this.$router.push({ path: '/mi-perfil', query: { success: 'true' } });
+                this.$router.push({ path: '/mi-perfil', query: { accountCreated: 'true' } });
             } catch (error) {
                 this.error = 'No se pudo crear la cuenta.';
             } finally {

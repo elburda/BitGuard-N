@@ -76,58 +76,58 @@ export default {
                 </template>
             </ul>
         </nav>
-        <main class="container p-4 mx-auto flex-grow">
-            <RouterView />
-        </main>
-        <!-- <footer class="flex justify-center items-center h-25 bg-[#474747] text-white">
-            <p>BitGuard &copy; 2025</p>
-        </footer> -->
-        <footer class="bg-gradient-to-b from-[#474747] to-[#000000] text-white py-8 px-4">
+        <main class="flex-grow p-4">
             <div class="container mx-auto">
-                
+                <RouterView />
+            </div>
+        </main>
+
+    <footer class="bg-gradient-to-b from-[#474747] to-[#000000] text-white py-8 px-4">
+            <div class="container mx-auto">
+                    
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center justify-items-center">
-                
-                    <div class="md:justify-self-start text-center md:text-left">
-                        <h3 class="font-bold text-lg mb-2">TP1: Clientes Web Mobile</h3>
-                        <div class="space-y-1">
-                        <p class="text-sm opacity-90">Profesor: Santiago Gallino</p>
-                        <p class="text-sm opacity-90">Alumnos: Burda Nicolás, Burda Darío</p>
+                    
+                        <div class="md:justify-self-start text-center md:text-left">
+                            <h3 class="font-bold text-lg mb-2">TP1: Clientes Web Mobile</h3>
+                            <div class="space-y-1">
+                            <p class="text-sm opacity-90">Profesor: Santiago Gallino</p>
+                            <p class="text-sm opacity-90">Alumnos: Burda Nicolás, Burda Darío</p>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="flex flex-col items-center justify-center space-y-2">
-                        <img 
-                        :src="logo" 
-                        alt="BitGuard logo" 
-                        class="h-12 opacity-80" 
-                        />
-                    </div>
-                    
-                    
-                    <div class="md:justify-self-end text-center md:text-right">
-                        <h4 class="font-bold mb-3">Enlaces rápidos</h4>
-                        <div class="space-y-2">
-                        <RouterLink 
-                            to="/" 
-                            class="block text-sm opacity-80 hover:opacity-100 hover:text-[#00FFC3] transition-all"
-                        >
-                            Inicio
-                        </RouterLink>
-                        <RouterLink 
-                            v-if="user.id !== null"
-                            to="/mi-perfil" 
-                            class="block text-sm opacity-80 hover:opacity-100 hover:text-[#00FFC3] transition-all"
-                        >
-                            Mi perfil
-                        </RouterLink>
+                        
+                        <div class="flex flex-col items-center justify-center space-y-2">
+                            <img 
+                            :src="logo" 
+                            alt="BitGuard logo" 
+                            class="h-12 opacity-80" 
+                            />
                         </div>
-                    </div>
+                        
+                        
+                        <div class="md:justify-self-end text-center md:text-right">
+                            <h4 class="font-bold mb-3">Enlaces rápidos</h4>
+                            <div class="space-y-2">
+                            <RouterLink 
+                                to="/" 
+                                class="block text-sm opacity-80 hover:opacity-100 hover:text-[#00FFC3] transition-all"
+                            >
+                                Inicio
+                            </RouterLink>
+                            <RouterLink 
+                                v-if="user.id !== null"
+                                to="/mi-perfil" 
+                                class="block text-sm opacity-80 hover:opacity-100 hover:text-[#00FFC3] transition-all"
+                            >
+                                Mi perfil
+                            </RouterLink>
+                            </div>
+                        </div>
                 </div>
-                
+                    
                 <div class="border-t border-white/20 mt-8 pt-4 text-center text-xs opacity-44">
                     <p>Desarrollado con Vue.js, Tailwind CSS y Supabase - Burda´s &copy; 2025</p>
                 </div>
             </div>
-        </footer>
+    </footer>
     </div>
 </template>
