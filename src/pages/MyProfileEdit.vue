@@ -101,7 +101,7 @@ export default {
             <input
                 v-model="profile.sector"
                 type="text"
-                id="career"
+                id="sector"
                 class="w-full p-2 border border-gray-400 rounded">
         </div>
         <div class="mb-3">
@@ -109,7 +109,7 @@ export default {
             <input
                 v-model="profile.equipo"
                 type="text"
-                id="location"
+                id="equipo"
                 class="w-full p-2 border border-gray-400 rounded">
         </div>
         <div class="mb-3">
@@ -117,7 +117,7 @@ export default {
             <input
                 v-model="profile.rustdesk"
                 type="text"
-                id="linkedin"
+                id="rustdesk"
                 class="w-full p-2 border border-gray-400 rounded">
         </div>
             <MainButton type="submit">Actualizar mi perfil</MainButton>
