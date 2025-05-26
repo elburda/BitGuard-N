@@ -1,45 +1,63 @@
 <script>
 import MainButton from '../components/MainButton.vue';
 import MainH1 from '../components/MainH1.vue';
+import AlertMessage from '../components/AlertMessage.vue';
 import { subscribeToAuthState, updateAuthProfile } from '../services/auth';
 
 export default {
-    name:'MyProfileEdit',
-    components: {MainH1, MainButton},
-    data(){
+    name: 'MyProfileEdit',
+    components: {
+        MainH1,
+        MainButton,
+        AlertMessage
+    },
+    data() {
         return {
             profile: {
-                bio:'',
+                bio: '',
                 display_name: '',
-                career:'',
+                career: '',
             },
             editing: false,
+            successMessage: '',
+            errorMessage: ''
         };
     },
     methods: {
-        async handleSubmit(){
+        async handleSubmit() {
             try {
                 this.editing = true;
-                await updateAuthProfile({...this.profile})
+                await updateAuthProfile({ ...this.profile });
                 this.editing = false;
+                this.$router.push({
+                    path: '/mi-perfil',
+                    query: { success: 'true' }
+                });
             } catch (error) {
-                
+                console.error("Error al actualizar perfil", error);
+                this.editing = false;
+                this.errorMessage = 'Error al realizar cambios';
             }
         }
     },
-    mounted(){
+    mounted() {
         subscribeToAuthState(newUserData => {
             this.profile = {
-                bio:newUserData.bio,
-                display_name:newUserData.display_name,
-                career:newUserData.career,
-            }
+                bio: newUserData.bio,
+                display_name: newUserData.display_name,
+                career: newUserData.career,
+            };
         });
     }
 }
 </script>
 
 <template>
+    <AlertMessage
+        v-if="errorMessage"
+        :message="errorMessage"
+        type="danger"
+    />
     <MainH1>Editar mi perfil</MainH1>
     <form 
         action="#"

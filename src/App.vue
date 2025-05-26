@@ -22,7 +22,7 @@ export default {
     methods:{
         handleLogout(){
             logout();
-            this.$router.push('/ingresar');
+            this.$router.push({ path: '/ingresar', query: { loggedOut: 'true' } });
         }
     },
     async mounted(){

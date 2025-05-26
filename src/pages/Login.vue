@@ -14,6 +14,7 @@ export default {
             },
             loading: false,
             error: '',
+            successMessage: '',
         }
     },
     methods: {
@@ -46,13 +47,27 @@ export default {
                 this.loading = false;
             }
         }
+    },
+    mounted() {
+        if (this.$route.query.success === 'true') {
+            this.successMessage = 'Tu cuenta fue creada con éxito.';
+            this.$router.replace({ path: this.$route.path });
+        }
+        else if (this.$route.query.loggedOut === 'true') {
+            this.successMessage = 'Sesión cerrada con éxito.';
+            this.$router.replace({ path: this.$route.path });
+        }
     }
 }
+
 </script>
 
 <template>
     <MainH1>Ingresar a mi cuenta</MainH1>
 
+    <div v-if="successMessage" class="w-full p-4 mb-4 text-green-800 bg-green-100 border border-green-400 rounded">
+        {{ successMessage }}
+    </div>
     <form action="#" 
         @submit.prevent="handleSubmit">
 

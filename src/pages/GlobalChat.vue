@@ -155,7 +155,6 @@ export default {
                     </div>
                 </li>
             </ul>
-            <!-- <MainLoader v-else/> -->
             <div v-else class="flex justify-center items-center w-full">
                 <MainLoader />
             </div>

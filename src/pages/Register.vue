@@ -39,7 +39,7 @@ export default {
             try {
                 this.loading = true;
                 await register(this.user.email, this.user.password);
-                this.$router.push('/chat');
+                this.$router.push({ path: '/chat', query: { success: 'true' } });
             } catch (error) {
                 this.error = 'No se pudo crear la cuenta.';
             } finally {
