@@ -29,6 +29,10 @@ export default {
 
     methods: {
     async handleSubmit() {
+        if (!/^\d*$/.test(this.profile.rustdesk)) {
+            this.errorMessage = 'El campo Rustdesk solo debe contener números.';
+            return;
+            }
         try {
             this.editing = true;
             await updateAuthProfile({ ...this.profile });
@@ -47,10 +51,10 @@ export default {
         subscribeToAuthState(newUserData => {
             this.profile = {
             bio: newUserData.bio,
-            display_name: newUserData.nombre_completo,
-            sector: newUserData.carrera,
-            equipo: newUserData.location,
-            rustdesk: newUserData.linkedin,
+            display_name: newUserData.display_name,
+            sector: newUserData.sector,
+            equipo: newUserData.equipo,
+            rustdesk: newUserData.rustdesk,
             };
         });
         if (this.$route.query.success === 'true') {
@@ -73,6 +77,9 @@ export default {
         action="#"
         @submit.prevent="handleSubmit"
     >
+        <div v-if="errorMessage" class="mb-4 p-3 bg-red-100 text-red-700 border border-red-400 rounded">
+            {{ errorMessage }}
+        </div>
         <div class="mb-3">
                 <label for="bio" class="block mb-2">Biografia</label>
                 <textarea
@@ -90,7 +97,7 @@ export default {
                 class="w-full p-2 border border-gray-400 rounded">
         </div>
         <div class="mb-3">
-            <label for="career" class="block mb-2">sector</label>
+            <label for="sector" class="block mb-2">sector</label>
             <input
                 v-model="profile.sector"
                 type="text"
@@ -98,7 +105,7 @@ export default {
                 class="w-full p-2 border border-gray-400 rounded">
         </div>
         <div class="mb-3">
-            <label for="location" class="block mb-2">Equipo</label>
+            <label for="equipo" class="block mb-2">Equipo</label>
             <input
                 v-model="profile.equipo"
                 type="text"
@@ -106,14 +113,13 @@ export default {
                 class="w-full p-2 border border-gray-400 rounded">
         </div>
         <div class="mb-3">
-            <label for="linkedin" class="block mb-2">Rustdesk</label>
+            <label for="rustdesk" class="block mb-2">Rustdesk</label>
             <input
                 v-model="profile.rustdesk"
                 type="text"
                 id="linkedin"
                 class="w-full p-2 border border-gray-400 rounded">
         </div>
-
             <MainButton type="submit">Actualizar mi perfil</MainButton>
     </form>
 </template>
