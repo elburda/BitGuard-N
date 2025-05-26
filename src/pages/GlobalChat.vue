@@ -1,11 +1,11 @@
 <script>
 import { nextTick } from 'vue';
 import MainH1 from '../components/MainH1.vue';
+import MainLoader from '../components/MainLoader.vue';
+import MainButton from '../components/MainButton.vue';
 import { receiveGlobalChatMessages, saveGlobalChatMessage, getGlobalChatLastMessages } from '../services/global-chat';
 import { subscribeToAuthState } from '../services/auth';
 import { RouterLink } from 'vue-router';
-import MainLoader from '../components/MainLoader.vue';
-import MainButton from '../components/MainButton.vue';
 
 export default {
     name: 'GlobalChat',
@@ -22,11 +22,11 @@ export default {
             },
             messages: [],
             loadingMessages: false,
-
             newMessage: {
                 body: '',
                 imageFile: null,
             },
+            comments: {},
         };
     },
 
@@ -38,11 +38,12 @@ export default {
                     email: this.user.email,
                     body: this.newMessage.body,
                 });
-
                 this.newMessage.body = '';
             } catch (error) {
+                console.error("Error al enviar el mensaje:", error);
             }
         },
+
         redirectScrollToChat(e) {
             const container = this.$refs.chatContainer;
             if (!container) return;
@@ -53,33 +54,58 @@ export default {
                 e.preventDefault();
             }
         },
+
         handleImageUpload(e) {
             const file = e.target.files[0];
             if (file) {
                 this.newMessage.imageFile = file;
             }
-        }
+        },
+
+        addComment(index) {
+            const commentText = this.messages[index].newComment.trim();
+            if (commentText) {
+                this.messages[index].comments.push(commentText);
+                this.messages[index].newComment = '';
+            }
+        },
+
+        async loadInitialComments() {
+            try {
+                for (const message of this.messages) {
+                    this.comments[message.id] = await loadComments(message.id);
+                }
+            } catch (error) {
+                console.error("Error cargando comentarios:", error);
+            }
+        },
     },
 
     async mounted() {
-
         subscribeToAuthState(newUserData => this.user = newUserData);
+
         receiveGlobalChatMessages(async newReceivedMessage => {
-            // this.messages.push(newReceivedMessage);
-            this.messages.push(newReceivedMessage);
-            this.messages.unshift(newReceivedMessage);
+            const newMessageWithComments = {
+                ...newReceivedMessage,
+                comments: [],
+                newComment: ''
+            };
+            this.messages.unshift(newMessageWithComments);
             await nextTick();
-            // this.$refs.chatContainer.scrollTop = this.$refs.chatContainer.scrollHeight;
         });
 
         try {
             this.loadingMessages = true;
             this.messages = await getGlobalChatLastMessages();
+            this.messages = this.messages.map(msg => ({
+                ...msg,
+                comments: [],
+                newComment: ''
+            }));
             this.loadingMessages = false;
             await nextTick();
-
-            // this.$refs.chatContainer.scrollTop = this.$refs.chatContainer.scrollHeight;
         } catch (error) {
+            console.error("Error cargando mensajes:", error);
         }
 
         window.addEventListener('wheel', this.redirectScrollToChat, { passive: false });
@@ -88,8 +114,9 @@ export default {
     beforeUnmount() {
         window.removeEventListener('wheel', this.redirectScrollToChat);
     }
-}
+};
 </script>
+
 
 <template>
     <div class="mx-auto flex flex-col">
@@ -114,7 +141,7 @@ export default {
                         class="w-full p-2 border border-gray-400 rounded resize-y max-h-[150px]">
                     </textarea>
                 </div>
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                     <label for="image" class="block mb-2">Imagen (opcional)</label>
                         <input
                             type="file"
@@ -123,8 +150,8 @@ export default {
                             @change="handleImageUpload"
                             class="block w-full text-sm text-gray-600"
                         />
-                    </div>
-                    <MainButton type="submit">Postear</MainButton>
+                </div> -->
+                <MainButton type="submit">Postear</MainButton>
 
             </form>
         </div>
@@ -136,7 +163,7 @@ export default {
                 v-if="!loadingMessages"
                 class="flex flex-col gap-4 divide-y divide-gray-300">
 
-                <li
+                <!-- <li
                     v-for="message in messages"
                     class="flex flex-col gap-0.5 py-2">
 
@@ -153,7 +180,89 @@ export default {
                         {{ new Date(message.created_at).toLocaleDateString() }}
                         {{ new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
                     </div>
+                </li> -->
+                <!-- <li v-for="(message, index) in messages" :key="message.id" class="flex flex-col gap-0.5 py-2">
+
+                    
+                    <div>
+                        <RouterLink
+                        :to="`/usuario/${message.sender_id}`"
+                        class="text-blue-800 font-bold underline"
+                        >
+                        {{ message.email }}
+                        </RouterLink>
+                    </div>
+                    <div>{{ message.body }}</div>
+                    <div class="text-sm text-green-600">
+                        {{ new Date(message.created_at).toLocaleDateString() }}
+                        {{ new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
+                    </div>
+
+                    
+                    <div v-if="message.comments.length" class="ml-4 mt-2 space-y-1">
+                        <div v-for="(comment, cIndex) in message.comments" :key="cIndex" class="text-sm text-gray-700">
+                        💬 {{ comment }}
+                        </div>
+                    </div>
+
+                    
+                    <div class="mt-2">
+                        <textarea
+                        v-model="message.newComment"
+                        class="w-full p-1 border border-gray-300 rounded text-sm resize-y"
+                        placeholder="Escribí un comentario...">
+                        </textarea>
+                        <button
+                        @click="addComment(index)"
+                        class="mt-1 px-2 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+                        >
+                        Comentar
+                        </button>
+                    </div>
+                </li> -->
+
+                <li v-for="(message, index) in messages" :key="message.id" class="flex flex-col gap-0.5 py-2">
+
+                    <!-- Mensaje principal -->
+                    <div>
+                        <RouterLink
+                            :to="`/usuario/${message.sender_id}`"
+                            class="text-blue-800 font-bold underline"
+                        >
+                            {{ message.email }}
+                        </RouterLink>
+                    </div>
+                    <div>{{ message.body }}</div>
+                    <div class="text-sm text-green-600">
+                        {{ new Date(message.created_at).toLocaleDateString() }}
+                        {{ new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
+                    </div>
+
+                    <!-- Comentarios existentes -->
+                    <div v-if="message.comments.length" class="ml-4 mt-2 space-y-1">
+                        <div v-for="(comment, cIndex) in message.comments" :key="cIndex" class="text-sm text-gray-700">
+                            💬 {{ comment }}
+                        </div>
+                    </div>
+
+                    <!-- Agregar comentario -->
+                    <div class="mt-2 flex gap-2 items-center">
+                        <input
+                            v-model="message.newComment"
+                            type="text"
+                            class="flex-1 p-1 border border-gray-300 rounded text-sm"
+                            placeholder="Postea tu respuesta"
+                        />
+                        <MainButton
+                            @click="addComment(index)"
+                            class="px-3 py-1 text-sm"
+                        >
+                            Responder
+                        </MainButton>
+                    </div>
                 </li>
+
+
             </ul>
             <div v-else class="flex justify-center items-center w-full">
                 <MainLoader />
