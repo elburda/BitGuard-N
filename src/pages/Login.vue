@@ -39,8 +39,8 @@ export default {
             if (!this.validateForm()) return;
             try {
                 this.loading = true;
-                await login(this.user.email, this.user.password);
-                this.$router.push('/chat');
+            await login(this.user.email, this.user.password);
+                this.$router.push({ path: '/chat', query: { loginSuccess: 'true' } });
             } catch (error) {
                 this.error = 'Credenciales incorrectas.';
             } finally {

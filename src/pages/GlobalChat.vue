@@ -7,6 +7,7 @@ import { RouterLink } from 'vue-router';
 import MainLoader from '../components/MainLoader.vue';
 import MainButton from '../components/MainButton.vue';
 
+
 export default {
     name: 'GlobalChat',
     components: { MainH1, MainLoader, MainButton },
@@ -17,19 +18,17 @@ export default {
                 id: null,
                 email: null,
                 display_name: null,
-                bio: null,
-                career: null,
             },
             messages: [],
             loadingMessages: false,
-
+            successMessage: '',
             newMessage: {
                 body: '',
                 imageFile: null,
             },
         };
     },
-
+    
     methods: {
         async sendMessage() {
             try {
@@ -63,13 +62,15 @@ export default {
 
     async mounted() {
 
+        if (this.$route.query.loginSuccess === 'true') {
+            this.successMessage = 'Has iniciado sesión con éxito.';
+            this.$router.replace({ path: this.$route.path });
+        }
         subscribeToAuthState(newUserData => this.user = newUserData);
         receiveGlobalChatMessages(async newReceivedMessage => {
-            // this.messages.push(newReceivedMessage);
             this.messages.push(newReceivedMessage);
             this.messages.unshift(newReceivedMessage);
             await nextTick();
-            // this.$refs.chatContainer.scrollTop = this.$refs.chatContainer.scrollHeight;
         });
 
         try {
@@ -78,7 +79,6 @@ export default {
             this.loadingMessages = false;
             await nextTick();
 
-            // this.$refs.chatContainer.scrollTop = this.$refs.chatContainer.scrollHeight;
         } catch (error) {
         }
 
@@ -92,6 +92,10 @@ export default {
 </script>
 
 <template>
+    <div v-if="successMessage" class="w-full p-4 mb-4 text-green-800 bg-green-100 border border-green-400 rounded">
+        {{ successMessage }}
+    </div>
+
     <div class="mx-auto flex flex-col">
         
         <div class="mx-auto overflow-y-auto w-9/12 pb-3">
