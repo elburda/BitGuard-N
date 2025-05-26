@@ -128,11 +128,6 @@ export default {
             <form 
                 action="#"
                 @submit.prevent="() => sendMessage()">
-
-                <div class="mb-1 flex">
-                    <span for="email" class="block mb-2 pr-2">Email:</span>
-                    <div class="font-bold">{{ user.email }}</div>
-                </div>
                 <div class="mb-3">
                     <label for="body" class="block mb-2">Mensaje</label>
                     <textarea
@@ -145,9 +140,8 @@ export default {
 
             </form>
         </div>
-        <div 
-            ref="chatContainer"
-            class="mx-auto overflow-y-auto w-9/12 h-100 scrollbar-hidden">
+        <div ref="chatContainer" class="mx-auto overflow-y-auto 
+                w-9/12 max-h-[250px] scrollbar-hidden">
             <h2 class="sr-only">Lista de Mensajes</h2>
             <ul 
                 v-if="!loadingMessages"

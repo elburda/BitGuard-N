@@ -76,13 +76,13 @@ export default {
                 </template>
             </ul>
         </nav>
-        <main class="flex-grow p-4">
+        <main class="flex-grow pt-2">
             <div class="container mx-auto">
                 <RouterView />
             </div>
         </main>
 
-    <footer class="bg-gradient-to-b from-[#474747] to-[#000000] text-white py-8 px-4">
+    <footer class="bg-gradient-to-b from-[#474747] to-[#000000] text-white py-4 px-4">
             <div class="container mx-auto">
                     
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center justify-items-center">
@@ -124,7 +124,7 @@ export default {
                         </div>
                 </div>
                     
-                <div class="border-t border-white/20 mt-8 pt-4 text-center text-xs opacity-44">
+                <div class="border-t border-white/20 mt-4 pt-2 text-center text-xs opacity-44">
                     <p>Desarrollado con Vue.js, Tailwind CSS y Supabase - Burda´s &copy; 2025</p>
                 </div>
             </div>
