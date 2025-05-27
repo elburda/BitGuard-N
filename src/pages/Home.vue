@@ -33,8 +33,8 @@ export default {
         :autoDismiss="true"
         @dismiss="successMessage = ''"
     />
-    <div class="flex flex-col items-center justify-center text-center px-5">
-        <MainH1 class="text-2xl font-bold my-4">¡Bienvenidos!</MainH1>
+    <div class="flex flex-col items-center justify-center text-center mt-40 px-5">
+        <MainH1 class="text-2xl bg-font-bold my-4">¡Bienvenidos!</MainH1>
         <img 
             :src="logo" 
             alt="BitGuard logo" 

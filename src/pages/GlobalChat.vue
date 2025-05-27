@@ -119,82 +119,109 @@ export default {
 
 
 <template>
-    <div class="mx-auto flex flex-col">
-        
-        <div class="mx-auto overflow-y-auto w-9/12 pb-3">
-            
-            <h2 class="mb-4 text-xl">Crear publicación</h2>
+  <!-- Espacio reservado para mensajes de éxito (evita saltos visuales) -->
+    <div class="min-h-[50px] mb-4">
+        <AlertMessage 
+        v-if="successMessage"
+        :message="successMessage"
+        type="success"
+        :autoDismiss="true"
+        @dismiss="successMessage = ''"
+        />
+    </div>
 
-            <form 
-                action="#"
-                @submit.prevent="() => sendMessage()">
-                <div class="mb-3">
-                    <label for="body" class="block mb-2">Mensaje</label>
-                    <textarea
+    <!-- Contenedor principal -->
+    <div class="mx-auto w-full max-w-4xl flex flex-col  px-5 ">
+
+        <!-- Formulario de creación de publicación -->
+<!-- Contenedor fijo y full width -->
+    <div class="fixed top-[105px] pt-4 left-0 right-0 h-45 bg-white z-40">
+    
+    <!-- Contenido centrado y con ancho máximo -->
+        <div class="mx-auto w-full max-w-[900px] px-4">
+            <h2 class="sr-only">Crear publicación</h2>
+
+                <form @submit.prevent="() => sendMessage()">
+                    <div class="mb-3">
+                        <label for="body" class="block mb-2">Crear publicación</label>
+                        <textarea
                         v-model="newMessage.body"
                         id="body"
-                        class="w-full p-2 border border-gray-400 rounded resize-y max-h-[150px]">
-                    </textarea>
-                </div>
-                <MainButton type="submit">Postear</MainButton>
-
-            </form>
-        </div>
-        <div ref="chatContainer" class="mx-auto overflow-y-auto 
-                w-9/12 max-h-[250px] scrollbar-hidden">
-            <h2 class="sr-only">Lista de Mensajes</h2>
-            <ul 
-                v-if="!loadingMessages"
-                class="flex flex-col gap-4 divide-y divide-gray-300">
-
-                <li v-for="(message, index) in messages" :key="message.id" class="flex flex-col gap-0.5 py-2">
-
-                    <!-- Mensaje principal -->
-                    <div>
-                        <RouterLink
-                        :to="`/usuario/${message.sender_id}`"
-                        class="text-blue-800 font-bold underline"
-                        >
-
-                            {{ message.email }}
-                        </RouterLink>
+                        class="w-full p-2 border
+                        border-gray-400 rounded resize-y max-h-[150px]">
+                        </textarea>
                     </div>
-                    <div>{{ message.body }}</div>
-                    <div class="text-sm text-green-600">
-                        {{ new Date(message.created_at).toLocaleDateString() }}
-                        {{ new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
-                    </div>
-
-                    <!-- Comentarios existentes -->
-                    <div v-if="message.comments.length" class="ml-4 mt-2 space-y-1">
-                        <div v-for="(comment, cIndex) in message.comments" :key="cIndex" class="text-sm text-gray-700">
-                            💬 {{ comment }}
+                        <div class="flex justify-end">
+                            <MainButton type="submit">Postear</MainButton>
                         </div>
-                    </div>
-
-                    <!-- Agregar comentario -->
-                    <div class="mt-2 flex gap-2 items-center">
-                        <input
-                            v-model="message.newComment"
-                            type="text"
-                            class="flex-1 p-1 border border-gray-300 rounded text-sm"
-                            placeholder="Postea tu respuesta"
-                        />
-                        <MainButton
-                            @click="addComment(index)"
-                            class="px-3 py-1 text-sm"
-                        >
-                            Responder
-                        </MainButton>
-                    </div>
-                </li>
-
-
-            </ul>
-            <div v-else class="flex justify-center items-center w-full">
-                <MainLoader />
-            </div>
+                </form>
         </div>
+    </div>
+
+
+        <!-- Lista de mensajes -->
+
+        <div ref="chatContainer " class="mt-40 overflow-y-auto scrollbar-hidden ">
+
         
+        <h2 class="sr-only">Lista de Mensajes</h2>
+
+        <ul
+            v-if="!loadingMessages"
+            class="flex flex-col gap-4 divide-y divide-gray-300"
+        >
+            <li
+            v-for="(message, index) in messages"
+            :key="message.id"
+            class="flex flex-col gap-0.5 py-2"
+            >
+            <!-- Mensaje principal -->
+            <div>
+                <RouterLink
+                :to="`/usuario/${message.sender_id}`"
+                class="text-blue-800 font-bold underline"
+                >
+                {{ message.email }}
+                </RouterLink>
+            </div>
+            <div>{{ message.body }}</div>
+            <div class="text-sm text-green-600">
+                {{ new Date(message.created_at).toLocaleDateString() }}
+                {{ new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
+            </div>
+
+            <!-- Comentarios existentes -->
+            <div v-if="message.comments.length" class="ml-4 mt-2 space-y-1">
+                <div
+                v-for="(comment, cIndex) in message.comments"
+                :key="cIndex"
+                class="text-sm text-gray-700"
+                >
+                💬 {{ comment }}
+                </div>
+            </div>
+
+            <!-- Agregar comentario -->
+            <div class="mt-2 flex gap-2 items-center">
+                <input
+                v-model="message.newComment"
+                type="text"
+                class="flex-1 p-1 border border-gray-300 rounded text-sm"
+                placeholder="Postea tu respuesta"
+                />
+                <MainButton
+                @click="addComment(index)"
+                class="px-3 py-1 text-sm"
+                >
+                Responder
+                </MainButton>
+            </div>
+            </li>
+        </ul>
+
+        <div v-else class="flex justify-center items-center w-full py-8">
+            <MainLoader />
+        </div>
+        </div>
     </div>
 </template>

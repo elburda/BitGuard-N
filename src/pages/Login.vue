@@ -65,37 +65,42 @@ export default {
 </script>
 
 <template>
-    <MainH1>Ingresar a mi cuenta</MainH1>
-
-    <AlertMessage 
-        v-if="successMessage"
-        :message="successMessage"
-        type="success"
-        :autoDismiss="true"
-        @dismiss="successMessage = ''"
-    />
-
-    <form action="#" 
-        @submit.prevent="handleSubmit">
-
-        <div v-if="error" class="text-red-600 mb-2">{{ error }}</div>
-        <div class="mb-3">
-            <label for="email" class="block mb-2">Email</label>
-            <input
-                v-model="user.email"
-                type="email"
-                id="email"
-                class="w-full p-2 border border-gray-400 rounded">
+    <div class="mt-15">
+        <div class="min-h-[60px]">
+            <AlertMessage 
+                v-if="successMessage"
+                :message="successMessage"
+                type="success"
+                :autoDismiss="true"
+                @dismiss="successMessage = ''"
+            />
         </div>
-        <div class="mb-3">
-            <label for="password" class="block mb-2">Contraseña</label>
-            <input
-                v-model="user.password"
-                type="password"
-                id="password"
-                class="w-full p-2 border border-gray-400 rounded">
-        </div>
-        <MainButton type="submit" :disabled="loading">Login</MainButton>
-    </form>
+
+        <MainH1>Ingresar a mi cuenta</MainH1>
+
+        <form action="#" 
+            @submit.prevent="handleSubmit">
+
+            <div v-if="error" class="text-red-600 mb-2">{{ error }}</div>
+            <div class="mb-3">
+                <label for="email" class="block mb-2">Email</label>
+                <input
+                    v-model="user.email"
+                    type="email"
+                    id="email"
+                    class="w-full p-2 border border-gray-400 rounded">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="block mb-2">Contraseña</label>
+                <input
+                    v-model="user.password"
+                    type="password"
+                    id="password"
+                    class="w-full p-2 border border-gray-400 rounded">
+            </div>
+            <MainButton type="submit" :disabled="loading">Login</MainButton>
+        </form>
+    </div>
+    
 </template>
 

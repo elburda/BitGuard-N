@@ -65,13 +65,15 @@ export default {
 </script>
 
 <template>
-    <AlertMessage 
-        v-if="successMessage"
-        :message="successMessage"
-        type="success"
-        :autoDismiss="true"
-        @dismiss="successMessage = ''"
-    />
+    <div class="min-h-[60px]">
+        <AlertMessage 
+            v-if="successMessage"
+            :message="successMessage"
+            type="success"
+            :autoDismiss="true"
+            @dismiss="successMessage = ''"
+        />
+    </div>
     <MainH1>Editar mi perfil</MainH1>
     <form 
         action="#"
